@@ -1,116 +1,262 @@
-<form id="feedbackForm"
-      action="https://formsubmit.co/2580d00419e1f2e0c7c49ec9d884f12c"
-      method="POST">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chore Manager Feedback</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Hidden Settings for FormSubmit -->
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_template" value="box">
-  <input type="hidden" name="_subject" value="New Chore Manager Feedback">
-
-  <!-- ⭐ Redirect if the user opens the FormSubmit link manually -->
-  <input type="hidden" name="_next" value="https://thesavior1214.github.io/">
-
-  <div class="form-group">
-    <label for="userName">Your Name:</label>
-    <input type="text" id="userName" name="userName" required />
-  </div>
-
-  <div class="form-group">
-    <label for="userEmail">Your Email:</label>
-    <input type="email" id="userEmail" name="userEmail" required />
-  </div>
-
-  <div class="rating-section">
-    <p>How would you rate your experience?</p>
-    <div class="stars" data-rating="0">
-      <span class="star" data-value="1">&#9733;</span>
-      <span class="star" data-value="2">&#9733;</span>
-      <span class="star" data-value="3">&#9733;</span>
-      <span class="star" data-value="4">&#9733;</span>
-      <span class="star" data-value="5">&#9733;</span>
-    </div>
-    <input type="hidden" name="rating" id="ratingInput" value="0" />
-  </div>
-
-  <div class="form-group">
-    <label for="feedbackText">Additional Comments or Suggestions:</label>
-    <textarea id="feedbackText" name="feedback" placeholder="Your feedback helps us improve..."></textarea>
-  </div>
-
-  <button type="submit">Submit Feedback</button>
-  <div id="thankYouMessage" class="message" style="display:none;">
-    Thanks for the feedback!
-  </div>
-
-</form>
-
-<script>
-  const stars = document.querySelector('.stars');
-  const ratingInput = document.getElementById('ratingInput');
-  const thankYouMessage = document.getElementById('thankYouMessage');
-  const feedbackForm = document.getElementById('feedbackForm');
-
-  // ⭐ STAR RATING LOGIC
-  stars.addEventListener('click', (e) => {
-    if (e.target.classList.contains('star')) {
-      const value = parseInt(e.target.dataset.value);
-      ratingInput.value = value;
-      updateStars(value);
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg,  #4aa3e0, #ACB6E5);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: #333;
     }
-  });
 
-  stars.addEventListener('mouseover', (e) => {
-    if (e.target.classList.contains('star')) {
-      const value = parseInt(e.target.dataset.value);
-      highlightStars(value);
+    .feedback-container {
+      background-color: #ffffffee;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 550px;
+      text-align: center;
+      animation: fadeInUp 0.6s ease-out;
     }
-  });
 
-  stars.addEventListener('mouseout', () => {
-    updateStars(parseInt(ratingInput.value));
-  });
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
 
-  function updateStars(rating) {
-    stars.querySelectorAll('.star').forEach(star => {
-      star.classList.toggle('selected', parseInt(star.dataset.value) <= rating);
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    h2 {
+      color: #34495e;
+      margin-bottom: 25px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #74c0fc;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .rating-section {
+      margin: 30px 0;
+    }
+
+    .rating-section p {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #444;
+    }
+
+    .stars {
+      font-size: 36px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.3s;
+    }
+
+    .stars .star {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .stars .star:hover {
+      transform: scale(1.2);
+    }
+
+    .stars .star.selected {
+      color: #f1c40f;
+    }
+
+    button {
+      background: linear-gradient(135deg, #5cb85c, #4cae4c);
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #27ae60;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="feedback-container">
+    <h1>Chore Manager</h1>
+    <h2>We’d love your feedback</h2>
+
+    <form id="feedbackForm"
+          action="https://formsubmit.co/2580d00419e1f2e0c7c49ec9d884f12c"
+          method="POST">
+
+      <!-- Hidden Settings for FormSubmit -->
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="box">
+      <input type="hidden" name="_subject" value="New Chore Manager Feedback">
+      <input type="hidden" name="_next" value="https://thesavior1214.github.io/">
+
+      <div class="form-group">
+        <label for="userName">Your Name:</label>
+        <input type="text" id="userName" name="userName" required />
+      </div>
+
+      <div class="form-group">
+        <label for="userEmail">Your Email:</label>
+        <input type="email" id="userEmail" name="userEmail" required />
+      </div>
+
+      <div class="rating-section">
+        <p>How would you rate your experience?</p>
+        <div class="stars" data-rating="0">
+          <span class="star" data-value="1">&#9733;</span>
+          <span class="star" data-value="2">&#9733;</span>
+          <span class="star" data-value="3">&#9733;</span>
+          <span class="star" data-value="4">&#9733;</span>
+          <span class="star" data-value="5">&#9733;</span>
+        </div>
+        <input type="hidden" name="rating" id="ratingInput" value="0" />
+      </div>
+
+      <div class="form-group">
+        <label for="feedbackText">Additional Comments or Suggestions:</label>
+        <textarea id="feedbackText" name="feedback" placeholder="Your feedback helps us improve..."></textarea>
+      </div>
+
+      <button type="submit">Submit Feedback</button>
+      <div id="thankYouMessage" class="message">Thanks for the feedback!</div>
+
+    </form>
+  </div>
+
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const stars = document.querySelector('.stars');
+    const ratingInput = document.getElementById('ratingInput');
+    const thankYouMessage = document.getElementById('thankYouMessage');
+    const feedbackForm = document.getElementById('feedbackForm');
+
+    // STAR RATING LOGIC
+    stars.addEventListener('click', (e) => {
+      if (e.target.classList.contains('star')) {
+        const value = parseInt(e.target.dataset.value);
+        ratingInput.value = value;
+        updateStars(value);
+      }
     });
-  }
 
-  function highlightStars(rating) {
-    stars.querySelectorAll('.star').forEach(star => {
-      star.style.color = parseInt(star.dataset.value) <= rating ? '#f1c40f' : '#ccc';
-    });
-  }
-
-  // ⭐ CONFETTI + AJAX SUBMISSION (NO REDIRECT)
-  feedbackForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // stop page reload
-
-    launchConfetti();
-    thankYouMessage.style.display = 'block';
-
-    const formData = new FormData(feedbackForm);
-
-    // ⭐ Send via AJAX - FormSubmit will NOT redirect and will NOT show the thanks page
-    await fetch(feedbackForm.action, {
-      method: "POST",
-      body: formData
+    stars.addEventListener('mouseover', (e) => {
+      if (e.target.classList.contains('star')) {
+        const value = parseInt(e.target.dataset.value);
+        highlightStars(value);
+      }
     });
 
-    // Optional: clear the form after submission
-    feedbackForm.reset();
-    ratingInput.value = 0;
+    stars.addEventListener('mouseout', () => {
+      updateStars(parseInt(ratingInput.value));
+    });
+
+    function updateStars(rating) {
+      stars.querySelectorAll('.star').forEach(star => {
+        star.classList.toggle('selected', parseInt(star.dataset.value) <= rating);
+      });
+    }
+
+    function highlightStars(rating) {
+      stars.querySelectorAll('.star').forEach(star => {
+        star.style.color = parseInt(star.dataset.value) <= rating ? '#f1c40f' : '#ccc';
+      });
+    }
+
+    // AJAX FORM SUBMISSION + CONFETTI
+    feedbackForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      launchConfetti();
+      thankYouMessage.style.display = 'block';
+
+      const formData = new FormData(feedbackForm);
+
+      await fetch(feedbackForm.action, {
+        method: "POST",
+        body: formData
+      });
+
+      feedbackForm.reset();
+      ratingInput.value = 0;
+      updateStars(0);
+    });
+
+    function launchConfetti() {
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+        scalar: 1.1
+      });
+    }
+
     updateStars(0);
-  });
-
-  function launchConfetti() {
-    confetti({
-      particleCount: 120,
-      spread: 80,
-      origin: { y: 0.6 },
-      scalar: 1.1
-    });
-  }
-
-  updateStars(0);
-</script>
+  </script>
+</body>
+</html>
