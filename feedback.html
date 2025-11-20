@@ -7,8 +7,8 @@
   <input type="hidden" name="_template" value="box">
   <input type="hidden" name="_subject" value="New Chore Manager Feedback">
 
-  <!-- ⭐ Redirect back to homepage instantly -->
-  <input type="hidden" name="_next" value="index.html">
+  <!-- ⭐ Redirect if the user opens the FormSubmit link manually -->
+  <input type="hidden" name="_next" value="https://thesavior1214.github.io/">
 
   <div class="form-group">
     <label for="userName">Your Name:</label>
@@ -38,7 +38,9 @@
   </div>
 
   <button type="submit">Submit Feedback</button>
-  <div id="thankYouMessage" class="message">Thanks for the feedback!</div>
+  <div id="thankYouMessage" class="message" style="display:none;">
+    Thanks for the feedback!
+  </div>
 
 </form>
 
@@ -80,17 +82,25 @@
     });
   }
 
-  // ⭐ CONFETTI + THANK YOU + DELAYED REDIRECT
-  feedbackForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // stop auto submission
+  // ⭐ CONFETTI + AJAX SUBMISSION (NO REDIRECT)
+  feedbackForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // stop page reload
 
     launchConfetti();
     thankYouMessage.style.display = 'block';
 
-    setTimeout(() => {
-      feedbackForm.submit();   // send to FormSubmit
-      window.location.href = "index.html"; // redirect after submission
-    }, 1000); // 1 second delay
+    const formData = new FormData(feedbackForm);
+
+    // ⭐ Send via AJAX - FormSubmit will NOT redirect and will NOT show the thanks page
+    await fetch(feedbackForm.action, {
+      method: "POST",
+      body: formData
+    });
+
+    // Optional: clear the form after submission
+    feedbackForm.reset();
+    ratingInput.value = 0;
+    updateStars(0);
   });
 
   function launchConfetti() {
