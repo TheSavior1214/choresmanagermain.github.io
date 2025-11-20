@@ -31,8 +31,14 @@
     }
 
     @keyframes fadeInUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     h1 {
@@ -145,15 +151,15 @@
     <h1>Chore Manager</h1>
     <h2>We’d love your feedback</h2>
 
+    <!-- ⭐ FORM WITH EMAIL BACKEND -->
     <form id="feedbackForm"
-          action="https://formsubmit.co/2580d00419e1f2e0c7c49ec9d884f12c"
+          action="https://formsubmit.co/rishik.nb@gmail.com"
           method="POST">
 
       <!-- Hidden Settings for FormSubmit -->
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_template" value="box">
       <input type="hidden" name="_subject" value="New Chore Manager Feedback">
-      <input type="hidden" name="_next" value="https://thesavior1214.github.io/">
 
       <div class="form-group">
         <label for="userName">Your Name:</label>
@@ -183,6 +189,7 @@
       </div>
 
       <button type="submit">Submit Feedback</button>
+
       <div id="thankYouMessage" class="message">Thanks for the feedback!</div>
 
     </form>
@@ -197,7 +204,6 @@
     const thankYouMessage = document.getElementById('thankYouMessage');
     const feedbackForm = document.getElementById('feedbackForm');
 
-    // STAR RATING LOGIC
     stars.addEventListener('click', (e) => {
       if (e.target.classList.contains('star')) {
         const value = parseInt(e.target.dataset.value);
@@ -229,22 +235,11 @@
       });
     }
 
-    // AJAX FORM SUBMISSION + CONFETTI
-    feedbackForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    // ⭐ Confetti when submitting
+    feedbackForm.addEventListener('submit', () => {
       launchConfetti();
       thankYouMessage.style.display = 'block';
-
-      const formData = new FormData(feedbackForm);
-
-      await fetch(feedbackForm.action, {
-        method: "POST",
-        body: formData
-      });
-
-      feedbackForm.reset();
-      ratingInput.value = 0;
-      updateStars(0);
+      setTimeout(() => thankYouMessage.style.display = 'none', 3000);
     });
 
     function launchConfetti() {
@@ -258,5 +253,6 @@
 
     updateStars(0);
   </script>
+
 </body>
 </html>
